@@ -1,8 +1,7 @@
+use dioxus::desktop::Config;
 // The dioxus prelude contains a ton of common items used in dioxus apps. It's a good idea to import wherever you
 // need dioxus
 use dioxus::prelude::*;
-
-use components::{Echo, Hero};
 
 /// Define a components module that contains all shared components for our app.
 mod components;
@@ -11,13 +10,18 @@ mod components;
 // The macro returns an `Asset` type that will display as the path to the asset in the browser or a local path in desktop bundles.
 const FAVICON: Asset = asset!("/assets/favicon.ico");
 // The asset macro also minifies some assets like CSS and JS to make bundled smaller
-const MAIN_CSS: Asset = asset!("/assets/styling/main.css");
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 
 fn main() {
     // The `launch` function is the main entry point for a dioxus app. It takes a component and renders it with the platform feature
     // you have enabled
-    dioxus::launch(App);
+
+    let conf = Config::default()
+        .with_menu(None);
+
+    LaunchBuilder::new()
+        .with_cfg(conf)
+        .launch(App);
 }
 
 /// App is the main component of our app. Components are the building blocks of dioxus apps. Each component is a function
@@ -31,10 +35,7 @@ fn App() -> Element {
         // In addition to element and text (which we will see later), rsx can contain other components. In this case,
         // we are using the `document::Link` component to add a link to our favicon and main CSS file into the head of our app.
         document::Link { rel: "icon", href: FAVICON }
-        document::Link { rel: "stylesheet", href: MAIN_CSS }
         document::Link { rel: "stylesheet", href: TAILWIND_CSS }
 
-        Hero {}
-        Echo {}
     }
 }
