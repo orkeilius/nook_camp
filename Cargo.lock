@@ -3589,7 +3589,10 @@ dependencies = [
 name = "nook_camp"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "dioxus",
+ "gloo-timers",
+ "tokio",
 ]
 
 [[package]]

@@ -1,7 +1,7 @@
-use dioxus::desktop::Config;
 // The dioxus prelude contains a ton of common items used in dioxus apps. It's a good idea to import wherever you
 // need dioxus
 use dioxus::prelude::*;
+use crate::components::hours_box::HourBox;
 
 /// Define a components module that contains all shared components for our app.
 mod components;
@@ -12,15 +12,13 @@ const FAVICON: Asset = asset!("/assets/favicon.ico");
 // The asset macro also minifies some assets like CSS and JS to make bundled smaller
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 
+const MAIN_CSS: Asset = asset!("/assets/styles/main.css");
+
 fn main() {
     // The `launch` function is the main entry point for a dioxus app. It takes a component and renders it with the platform feature
     // you have enabled
 
-    let conf = Config::default()
-        .with_menu(None);
-
     LaunchBuilder::new()
-        .with_cfg(conf)
         .launch(App);
 }
 
@@ -36,6 +34,11 @@ fn App() -> Element {
         // we are using the `document::Link` component to add a link to our favicon and main CSS file into the head of our app.
         document::Link { rel: "icon", href: FAVICON }
         document::Link { rel: "stylesheet", href: TAILWIND_CSS }
+        document::Link { rel: "stylesheet", href: MAIN_CSS}
+
+        div{
+            HourBox{}
+        }
 
     }
 }
