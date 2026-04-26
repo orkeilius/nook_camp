@@ -1,13 +1,12 @@
 use chrono::{DateTime, Local, Timelike};
 use dioxus::hooks::{use_effect, use_signal};
 use dioxus::prelude::*;
-use tokio::time::sleep;
 
 #[component]
 pub fn Hours() -> Element {
     let current_time: Signal<DateTime<Local>> = use_signal(|| Local::now());
 
-    use_effect(move || {
+    use_hook(move || {
         spawn(time_observer(current_time));
     });
 
@@ -19,7 +18,13 @@ pub fn Hours() -> Element {
 
 async fn time_observer(mut signal: Signal<DateTime<Local>>) {
     loop {
-        sleep(time_to_next_minute()).await;
+        let duration = time_to_next_minute();
+
+        #[cfg(feature = "web")]
+        gloo_timers::future::TimeoutFuture::new(duration.as_millis() as u32).await;
+        #[cfg(feature = "desktop")]
+        tokio::time::sleep(duration).await;
+
         signal.set(Local::now());
     }
 }

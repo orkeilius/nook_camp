@@ -28,6 +28,7 @@ pub fn HourBox() -> Element {
 fn SettingIcon() -> Element{
     rsx!{
         img {
+            alt: "Setting Icon",
             class: Styles::icon,
             src: asset!("/assets/icon/heroicons_cog-6-tooth.svg"),
             onclick : move |_| tracing::info!("Todo !")
@@ -39,6 +40,7 @@ fn SettingIcon() -> Element{
 fn TownMusicIcon() -> Element{
     rsx!{
         img {
+            alt: "Town Music Icon",
             class: Styles::icon,
             src: asset!("/assets/icon/heroicons_bell.svg"),
             onclick : move |_| tracing::info!("Todo !")
