@@ -1,0 +1,30 @@
+
+.container{
+    padding: 0.2em;
+    background: var(--color-bg);
+    width: 150px;
+    font-size: 1.75em;
+    font-family: Monocraft;
+
+    display: flex;
+    flex-direction: row;
+}
+.hours{
+    margin: 0.5em;
+    flex-grow: 1;
+    text-align: center;
+}
+
+
+.icon-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 22px;
+}
+
+.icon{
+    color: white;
+    width: 22px;
+    height: 22px;
+}
