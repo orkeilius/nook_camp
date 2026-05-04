@@ -2,9 +2,12 @@
 // need dioxus
 use dioxus::prelude::*;
 use crate::components::hours_box::HourBox;
+use crate::components::volume::Volume;
+use crate::data::volume_type::VolumeType;
 
 /// Define a components module that contains all shared components for our app.
 mod components;
+mod data;
 
 // We can import assets in dioxus with the `asset!` macro. This macro takes a path to an asset relative to the crate root.
 // The macro returns an `Asset` type that will display as the path to the asset in the browser or a local path in desktop bundles.
@@ -13,6 +16,10 @@ const FAVICON: Asset = asset!("/assets/favicon.ico");
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 
 const MAIN_CSS: Asset = asset!("/assets/styles/main.css");
+
+#[css_module("/assets/styles/blocking.css")]
+struct Styles;
+
 
 fn main() {
     // The `launch` function is the main entry point for a dioxus app. It takes a component and renders it with the platform feature
@@ -37,7 +44,18 @@ fn App() -> Element {
         document::Link { rel: "stylesheet", href: MAIN_CSS}
 
         div{
-            HourBox{}
+            class: Styles::container,
+            div{
+                class: Styles::hour_column,
+                HourBox{}
+
+            }
+            Volume{
+                volume_type: VolumeType::Music
+            }
+            Volume {
+                volume_type: VolumeType::Rain
+            }
         }
 
     }
