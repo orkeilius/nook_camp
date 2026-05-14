@@ -11,12 +11,12 @@ env:
 
 jobs:
   test-unit:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 #v2.9.1
+        with:
+          shared-key: "test-unit"
       - uses: taiki-e/install-action@e1c4cd42111751368541a7cb5db3522bd1f846a4 #2.78.0
         with:
           tool: cargo-llvm-cov@0.8.7
@@ -26,6 +26,17 @@ jobs:
         with:
           name: coverage
           path: lcov.info
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 #v2.9.1
+        with:
+          shared-key: "lint"
+      - run: rustup component add clippy rustfmt
+      - run: cargo clippy --locked --no-default-features --features web -- -D warnings
+      - run: cargo fmt --check
 
   sonarqube:
     name: SonarQube
