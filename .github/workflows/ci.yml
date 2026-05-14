@@ -35,7 +35,7 @@ jobs:
         with:
           shared-key: "lint"
       - run: rustup component add clippy rustfmt
-      - run: cargo clippy --locked --no-default-features --features web -- -D warnings
+      - run: cargo clippy --locked --no-deps --no-default-features --features web -- -D warnings
       - run: cargo fmt --check
 
   sonarqube:
