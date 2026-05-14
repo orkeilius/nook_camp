@@ -1,10 +1,10 @@
 use chrono::{DateTime, Local, Timelike};
-use dioxus::hooks::{use_effect, use_signal};
+use dioxus::hooks::{use_signal};
 use dioxus::prelude::*;
 
 #[component]
 pub fn Hours() -> Element {
-    let current_time: Signal<DateTime<Local>> = use_signal(|| Local::now());
+    let current_time: Signal<DateTime<Local>> = use_signal(Local::now);
 
     use_hook(move || {
         spawn(time_observer(current_time));
