@@ -1,5 +1,5 @@
 use chrono::{DateTime, Local, Timelike};
-use dioxus::hooks::{use_signal};
+use dioxus::hooks::use_signal;
 use dioxus::prelude::*;
 
 #[component]

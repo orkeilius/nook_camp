@@ -1,7 +1,7 @@
 // The dioxus prelude contains a ton of common items used in dioxus apps. It's a good idea to import wherever you
 // need dioxus
-use dioxus::prelude::*;
 use crate::components::hours_box::HourBox;
+use dioxus::prelude::*;
 
 /// Define a components module that contains all shared components for our app.
 mod components;
@@ -18,8 +18,7 @@ fn main() {
     // The `launch` function is the main entry point for a dioxus app. It takes a component and renders it with the platform feature
     // you have enabled
 
-    LaunchBuilder::new()
-        .launch(App);
+    LaunchBuilder::new().launch(App);
 }
 
 /// App is the main component of our app. Components are the building blocks of dioxus apps. Each component is a function
