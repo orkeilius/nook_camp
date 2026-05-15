@@ -1,3 +1,4 @@
+use crate::components::icon::Icon;
 use crate::data::volume_type::VolumeType;
 use crate::data::volume_unit::VolumeUnit;
 use dioxus::html::input_data::MouseButton;
@@ -16,7 +17,6 @@ pub struct VolumeProps {
 pub fn Volume(props: VolumeProps) -> Element {
     let volume_type = props.volume_type;
 
-    let color = "#2345BD";
     let volume_level = use_signal(|| VolumeUnit::new(0.7));
     let mut volume_div = use_signal(|| None);
 
@@ -35,11 +35,15 @@ pub fn Volume(props: VolumeProps) -> Element {
                 onmousemove: move |e| handle_on_mouse(e,volume_level,volume_div),
                 div{
                     class: Styles::volume_inner,
-                    background: color,
+                    background: volume_type.color(),
                     height: format!("{}%", volume_level.read().percent() * 100.0)
                 },
+            },
+            Icon{
+                class: Styles::icon,
+                icon: volume_type.icon(),
+                color: if volume_level.read().percent() == 0.0 { "#888888" } else { volume_type.color() },
             }
-            img{}
         }
     }
 }

@@ -1,5 +1,3 @@
-use dioxus::prelude::*;
-
 #[derive(Clone, PartialEq)]
 pub enum IconType {
     Music,
