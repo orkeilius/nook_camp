@@ -16,7 +16,8 @@ impl VolumeUnit {
     }
 
     pub fn set_percent(&mut self, percent: f32) {
-        self.percent = percent.clamp(0.0, 1.0);
+        let rouded = (percent * 10.0).round() / 10.0;
+        self.percent = rouded.clamp(0.0, 1.0);
     }
 
     pub fn volume_up(&mut self) {
@@ -46,4 +47,10 @@ fn test_volume_unit() {
 
     volume.set_percent(0.7);
     assert_eq!(volume.percent(), 0.7);
+
+    volume.set_percent(0.001);
+    assert_eq!(volume.percent(), 0.0);
+
+    volume.set_percent(0.99);
+    assert_eq!(volume.percent(), 1.0);
 }
