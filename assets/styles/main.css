@@ -1,10 +1,9 @@
 body {
     color: aliceblue;
-    background: grey;
+    background: var(--color-bg);
 
     --color-bg : #353840;
-
-
+    --color-bg-accent : #4f535c;
 }
 
 @font-face {

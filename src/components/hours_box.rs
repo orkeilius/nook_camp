@@ -1,13 +1,12 @@
+use crate::components::hours::Hours;
 use dioxus::logger::tracing;
 use dioxus::prelude::*;
-use crate::components::hours::Hours;
 
 #[css_module("/assets/styles/hours_box.css")]
 struct Styles;
 
 #[component]
 pub fn HourBox() -> Element {
-
     rsx! {
         div{
             class: Styles::container,
@@ -25,8 +24,8 @@ pub fn HourBox() -> Element {
 }
 
 #[component]
-fn SettingIcon() -> Element{
-    rsx!{
+fn SettingIcon() -> Element {
+    rsx! {
         img {
             alt: "Setting Icon",
             class: Styles::icon,
@@ -37,8 +36,8 @@ fn SettingIcon() -> Element{
 }
 
 #[component]
-fn TownMusicIcon() -> Element{
-    rsx!{
+fn TownMusicIcon() -> Element {
+    rsx! {
         img {
             alt: "Town Music Icon",
             class: Styles::icon,
