@@ -20,3 +20,25 @@ impl VolumeType {
         }
     }
 }
+
+#[cfg(test)]
+mod volume_type_test {
+    use super::*;
+    use parameterized::parameterized;
+
+    #[parameterized(
+        input = {VolumeType::Music, VolumeType::Rain},
+        expected = {"#8959d6", "#1ab3dd"},
+    )]
+    fn color_test(input: VolumeType, expected: &str) {
+        assert_eq!(input.color(), expected);
+    }
+
+    #[parameterized(
+        input = {VolumeType::Music, VolumeType::Rain},
+        expected = {IconType::Music, IconType::Rain},
+    )]
+    fn icon_test(input: VolumeType, expected: IconType) {
+        assert_eq!(input.icon(), expected);
+    }
+}

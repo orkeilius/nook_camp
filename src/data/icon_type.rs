@@ -1,4 +1,4 @@
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum IconType {
     Music,
     Rain,
@@ -20,5 +20,27 @@ impl IconType {
             IconType::Music | IconType::Rain => true,
             IconType::Setting | IconType::TownMusic => false,
         }
+    }
+}
+
+#[cfg(test)]
+mod icon_type_test {
+    use super::*;
+    use parameterized::parameterized;
+
+    #[parameterized(
+        input = {IconType::Music, IconType::Rain, IconType::Setting, IconType::TownMusic},
+        expected = {true,true,false,false}
+    )]
+    fn is_pixel_art_test(input: IconType, expected: bool) {
+        assert_eq!(expected, input.is_pixel_art());
+    }
+
+    #[parameterized(
+        input = {IconType::Music, IconType::Rain, IconType::Setting, IconType::TownMusic},
+        expected = {211,207,1060,287}
+    )]
+    fn path_test(input: IconType, expected: usize) {
+        assert_eq!(input.path().len(), expected);
     }
 }

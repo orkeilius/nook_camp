@@ -29,28 +29,49 @@ impl VolumeUnit {
     }
 }
 
-#[test]
-fn test_volume_unit() {
-    let mut volume = VolumeUnit { percent: 0.5 };
+#[cfg(test)]
+mod volume_unit_test {
 
-    volume.volume_up();
-    assert_eq!(volume.percent(), 0.6);
+    use super::*;
+    use parameterized::parameterized;
 
-    volume.volume_down();
-    assert_eq!(volume.percent(), 0.5);
+    #[parameterized(
+        input = {0.0,0.5,1.0,1.2,-0.5},
+        expected = {0.0,0.5,1.0,1.0,0.0},
+    )]
+    fn new_test(input: f32, expected: f32) {
+        let v = VolumeUnit::new(input);
+        assert_eq!(v.percent(), expected);
+    }
 
-    volume.set_percent(1.2);
-    assert_eq!(volume.percent(), 1.0);
+    #[parameterized(
+        input = {1.2,-0.5,0.7,0.001,0.99},
+        expected = {1.0,0.0,0.7,0.0,1.0},
+    )]
+    fn set_percent_test(input: f32, expected: f32) {
+        let mut volume = VolumeUnit { percent: 0.5 };
 
-    volume.set_percent(-0.5);
-    assert_eq!(volume.percent(), 0.0);
+        volume.set_percent(input);
+        assert_eq!(volume.percent(), expected);
+    }
 
-    volume.set_percent(0.7);
-    assert_eq!(volume.percent(), 0.7);
+    #[parameterized(
+        input = {0.0,0.555,0.95,1.0},
+        expected = {0.1,0.7,1.0,1.0},
+    )]
+    fn volume_up_test(input: f32, expected: f32) {
+        let mut v = VolumeUnit::new(input);
+        v.volume_up();
+        assert_eq!(v.percent(), expected);
+    }
 
-    volume.set_percent(0.001);
-    assert_eq!(volume.percent(), 0.0);
-
-    volume.set_percent(0.99);
-    assert_eq!(volume.percent(), 1.0);
+    #[parameterized(
+        input = {0.0,0.555,0.95,1.0},
+        expected = {0.0,0.5,0.9,0.9},
+    )]
+    fn volume_down_test(input: f32, expected: f32) {
+        let mut v = VolumeUnit::new(input);
+        v.volume_down();
+        assert_eq!(v.percent(), expected);
+    }
 }
