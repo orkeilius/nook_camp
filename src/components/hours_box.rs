@@ -1,4 +1,6 @@
 use crate::components::hours::Hours;
+use crate::components::icon::Icon;
+use crate::data::icon_type::IconType;
 use dioxus::logger::tracing;
 use dioxus::prelude::*;
 
@@ -16,33 +18,25 @@ pub fn HourBox() -> Element {
             }
             div{
                 class: Styles::icon_container,
-                SettingIcon {}
-                TownMusicIcon {}
+                div {
+                    class: Styles::icon,
+                    onclick: move |_| tracing::info!("Todo !"),
+                    Icon {
+                        class: Styles::icon,
+                        icon: IconType::Setting,
+                        color: "white".to_string()
+                    }
+                }
+                div {
+                    class: Styles::icon,
+                    onclick: move |_| tracing::info!("Todo !"),
+                    Icon {
+                        class: Styles::icon,
+                        icon: IconType::TownMusic,
+                        color: "white".to_string()
+                    }
+                }
             }
-        }
-    }
-}
-
-#[component]
-fn SettingIcon() -> Element {
-    rsx! {
-        img {
-            alt: "Setting Icon",
-            class: Styles::icon,
-            src: asset!("/assets/icon/heroicons_cog-6-tooth.svg"),
-            onclick : move |_| tracing::info!("Todo !")
-        }
-    }
-}
-
-#[component]
-fn TownMusicIcon() -> Element {
-    rsx! {
-        img {
-            alt: "Town Music Icon",
-            class: Styles::icon,
-            src: asset!("/assets/icon/heroicons_bell.svg"),
-            onclick : move |_| tracing::info!("Todo !")
         }
     }
 }

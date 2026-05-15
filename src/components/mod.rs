@@ -4,4 +4,5 @@
 
 pub mod hours;
 pub mod hours_box;
+pub mod icon;
 pub mod volume;
