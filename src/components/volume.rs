@@ -1,6 +1,5 @@
 use crate::data::volume_type::VolumeType;
-use crate::data::VolumeUnit::VolumeUnit;
-use dioxus::html::geometry::WheelDelta;
+use crate::data::volume_unit::VolumeUnit;
 use dioxus::html::input_data::MouseButton;
 use dioxus::prelude::*;
 use std::rc::Rc;
@@ -18,7 +17,7 @@ pub fn Volume(props: VolumeProps) -> Element {
     let volume_type = props.volume_type;
 
     let color = "#2345BD";
-    let mut volume_level = use_signal(|| VolumeUnit::new(0.7));
+    let volume_level = use_signal(|| VolumeUnit::new(0.7));
     let mut volume_div = use_signal(|| None);
 
     rsx! {
