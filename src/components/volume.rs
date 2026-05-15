@@ -1,9 +1,9 @@
-use std::rc::Rc;
-use dioxus::html::geometry::WheelDelta;
-use dioxus::html::input_data::MouseButton;
 use crate::data::volume_type::VolumeType;
 use crate::data::VolumeUnit::VolumeUnit;
+use dioxus::html::geometry::WheelDelta;
+use dioxus::html::input_data::MouseButton;
 use dioxus::prelude::*;
+use std::rc::Rc;
 
 #[css_module("/assets/styles/volume.css")]
 struct Styles;
@@ -45,8 +45,13 @@ pub fn Volume(props: VolumeProps) -> Element {
     }
 }
 
-async fn handle_on_mouse(event: Event<MouseData>, mut volume_level: Signal<VolumeUnit>, volume_div: Signal<Option<Rc<MountedData>>>)  {
-    if !event.data().held_buttons().contains(MouseButton::Primary) || volume_div.as_ref().is_none() {
+async fn handle_on_mouse(
+    event: Event<MouseData>,
+    mut volume_level: Signal<VolumeUnit>,
+    volume_div: Signal<Option<Rc<MountedData>>>,
+) {
+    if !event.data().held_buttons().contains(MouseButton::Primary) || volume_div.as_ref().is_none()
+    {
         return;
     }
     let client_rect = volume_div.unwrap().get_client_rect().await.unwrap();
@@ -55,15 +60,16 @@ async fn handle_on_mouse(event: Event<MouseData>, mut volume_level: Signal<Volum
 
     let pos_relative_target_y = (event.data().client_coordinates().y - div_offset) / div_height;
 
-    volume_level.write().set_percent(1.0 - pos_relative_target_y as f32);
-
+    volume_level
+        .write()
+        .set_percent(1.0 - pos_relative_target_y as f32);
 }
 
 fn handle_on_wheel(event: Event<WheelData>, mut volume_level: Signal<VolumeUnit>) {
     let direction = event.delta().strip_units().y;
     if direction < 0.0 {
         volume_level.write().volume_up()
-    }else{
+    } else {
         volume_level.write().volume_down();
     }
 }

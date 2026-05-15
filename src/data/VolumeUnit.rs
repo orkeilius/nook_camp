@@ -1,4 +1,3 @@
-
 pub struct VolumeUnit {
     percent: f32,
 }
@@ -6,7 +5,6 @@ pub struct VolumeUnit {
 const VOLUME_STEP: f32 = 0.1;
 
 impl VolumeUnit {
-
     pub fn new(percent: f32) -> Self {
         Self {
             percent: percent.clamp(0.0, 1.0),
