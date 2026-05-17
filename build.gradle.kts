@@ -7,12 +7,14 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinJvm) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
-    id("org.sonarqube") version "7.3.0.8198"
+    alias(libs.plugins.kover)
+    alias(libs.plugins.sonarqube)
 }
 
-sonar {
+sonarqube {
     properties {
         property("sonar.projectKey", "orkeilius_nook_camp")
         property("sonar.organization", "orkeilius")
+        property("sonar.coverage.jacoco.xmlReportPaths", "shared/build/reports/kover/report.xml")
     }
 }
