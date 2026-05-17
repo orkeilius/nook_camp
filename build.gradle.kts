@@ -15,6 +15,9 @@ sonarqube {
     properties {
         property("sonar.projectKey", "orkeilius_nook_camp")
         property("sonar.organization", "orkeilius")
-        property("sonar.coverage.jacoco.xmlReportPaths", "shared/build/reports/kover/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "../shared/build/reports/kover/report.xml")
     }
+}
+dependencies{
+    kover(project(":shared"))
 }
