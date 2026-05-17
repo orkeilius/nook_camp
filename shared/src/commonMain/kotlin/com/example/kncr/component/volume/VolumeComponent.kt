@@ -9,12 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.semantics.testTag
-import com.example.kncr.component.icon.AppIcon
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.kncr.component.icon.AppIcon
 import com.example.kncr.data.VolumeType
 
 @Preview
@@ -29,7 +28,6 @@ fun VolumeComponent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-
     ) {
         Box(
             contentAlignment = Alignment.BottomCenter,
@@ -38,33 +36,8 @@ fun VolumeComponent(
                 .width(20.dp)
                 .height(120.dp)
                 .background(Color(0xFFE0E0E0))
-                .pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            if (event.type != PointerEventType.Scroll) {
-                                continue
-                            }
-                            val deltaY = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
-                            if (deltaY == 0f) {
-                                continue
-                            }
-                            viewModel.handleOnScroll(deltaY)
-                        }
-                    }
-                }
-                .pointerInput(Unit) {
-                    awaitEachGesture {
-                        val down = awaitFirstDown()
-                        viewModel.handleOnMouseDrag(down.position.y / size.height)
-                        do {
-                            val event = awaitPointerEvent()
-                            if (event.type == PointerEventType.Move && event.changes.any { it.pressed }) {
-                                viewModel.handleOnMouseDrag(event.changes.first().position.y / size.height)
-                            }
-                        } while (event.changes.any { it.pressed })
-                    }
-                }
+                .scrollHandler(viewModel)
+                .dragHandler(viewModel)
         ) {
             Box(
                 modifier = Modifier
@@ -81,5 +54,30 @@ fun VolumeComponent(
             color = if (volume.percent == 0f) Color(0xFF888888) else type.color,
             modifier = Modifier.size(24.dp)
         )
+    }
+}
+
+private fun Modifier.scrollHandler(viewModel: VolumeViewModel): Modifier = pointerInput(Unit) {
+    awaitPointerEventScope {
+        while (true) {
+            val event = awaitPointerEvent()
+            if (event.type != PointerEventType.Scroll) continue
+            val deltaY = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
+            if (deltaY == 0f) continue
+            viewModel.handleOnScroll(deltaY)
+        }
+    }
+}
+
+private fun Modifier.dragHandler(viewModel: VolumeViewModel): Modifier = pointerInput(Unit) {
+    awaitEachGesture {
+        val down = awaitFirstDown()
+        viewModel.handleOnMouseDrag(down.position.y / size.height)
+        do {
+            val event = awaitPointerEvent()
+            if (event.type == PointerEventType.Move && event.changes.any { it.pressed }) {
+                viewModel.handleOnMouseDrag(event.changes.first().position.y / size.height)
+            }
+        } while (event.changes.any { it.pressed })
     }
 }
