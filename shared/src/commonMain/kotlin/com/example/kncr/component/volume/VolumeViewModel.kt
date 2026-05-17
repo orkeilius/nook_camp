@@ -19,6 +19,10 @@ class VolumeViewModel(val volumeType: VolumeType) : ViewModel() {
 
     fun handleOnScroll(deltaY: Float) {
         _volume.update { current ->
+            if (deltaY == 0f) {
+               return
+            }
+
             if (deltaY < 0f) {
                 current.volumeUp()
             } else {

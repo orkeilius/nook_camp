@@ -9,8 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.semantics.testTag
 import com.example.kncr.component.icon.AppIcon
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kncr.data.VolumeType
@@ -20,11 +22,9 @@ import com.example.kncr.data.VolumeType
 fun VolumeComponent(
     viewModel: VolumeViewModel = VolumeViewModel(VolumeType.Music),
     modifier: Modifier = Modifier,
-    ) {
+) {
     val volume by viewModel.volume.collectAsState()
     val type = viewModel.volumeType
-
-    val iconColor = if (volume.percent == 0f) Color(0xFF888888) else type.color
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -34,6 +34,7 @@ fun VolumeComponent(
         Box(
             contentAlignment = Alignment.BottomCenter,
             modifier = Modifier
+                .testTag("volumeBar")
                 .width(20.dp)
                 .height(120.dp)
                 .background(Color(0xFFE0E0E0))
@@ -41,12 +42,14 @@ fun VolumeComponent(
                     awaitPointerEventScope {
                         while (true) {
                             val event = awaitPointerEvent()
-                            if (event.type == PointerEventType.Scroll) {
-                                val deltaY = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
-                                if (deltaY != 0f) {
-                                    viewModel.handleOnScroll(deltaY)
-                                }
+                            if (event.type != PointerEventType.Scroll) {
+                                continue
                             }
+                            val deltaY = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
+                            if (deltaY == 0f) {
+                                continue
+                            }
+                            viewModel.handleOnScroll(deltaY)
                         }
                     }
                 }
@@ -75,7 +78,7 @@ fun VolumeComponent(
 
         AppIcon(
             iconType = type.icon,
-            color = iconColor,
+            color = if (volume.percent == 0f) Color(0xFF888888) else type.color,
             modifier = Modifier.size(24.dp)
         )
     }
