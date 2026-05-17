@@ -7,4 +7,14 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinJvm) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.kover)
+    alias(libs.plugins.sonarqube)
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "orkeilius_nook_camp")
+        property("sonar.organization", "orkeilius")
+        property("sonar.coverage.jacoco.xmlReportPaths", "shared/build/reports/kover/report.xml")
+    }
 }

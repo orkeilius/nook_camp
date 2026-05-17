@@ -6,10 +6,25 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kover)
+}
+
+kover {
+    currentProject {
+        sources {
+            excludedSourceSets.addAll("commonTest", "jvmTest")
+        }
+    }
 }
 
 kotlin {
-    jvm()
+    jvm {
+        testRuns.all {
+            executionTask {
+                useJUnitPlatform()
+            }
+        }
+    }
 
     js {
         browser()
@@ -52,9 +67,14 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotest.framework.engine)
+            implementation(libs.kotest.assertions.core)
         }
         jsMain.dependencies {
             implementation(libs.wrappers.browser)
+        }
+        jvmTest.dependencies {
+            implementation(libs.kotest.runner.junit6)
         }
     }
 }
