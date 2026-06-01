@@ -36,6 +36,7 @@ fun MainScreen() {
         Row() {
             SubMenuButton(SubMenuButtonType.Playlist)
             SubMenuButton(SubMenuButtonType.Setting)
+            SubMenuButton(SubMenuButtonType.TownMusic)
         }
     }
 }
