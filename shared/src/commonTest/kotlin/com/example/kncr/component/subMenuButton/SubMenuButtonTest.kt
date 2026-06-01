@@ -4,27 +4,24 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.v2.runComposeUiTest
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.datatest.withData
 
 @OptIn(ExperimentalTestApi::class)
 class SubMenuButtonTest : FunSpec({
 
-    test("displays Playlist alt text when SubMenuButtonType is Playlist") {
-        runComposeUiTest {
-            setContent {
-                SubMenuButton(SubMenuButtonType.Playlist)
+    context("displays alt text") {
+        withData(
+            SubMenuButtonType.Playlist,
+            SubMenuButtonType.Setting,
+            SubMenuButtonType.TownMusic,
+        ) { type ->
+            runComposeUiTest {
+                setContent {
+                    SubMenuButton(type)
+                }
+
+                onNodeWithContentDescription(type.altText).assertExists()
             }
-
-            onNodeWithContentDescription("Playlist").assertExists()
-        }
-    }
-
-    test("displays Settings alt text when SubMenuButtonType is Setting") {
-        runComposeUiTest {
-            setContent {
-                SubMenuButton(SubMenuButtonType.Setting)
-            }
-
-            onNodeWithContentDescription("Settings").assertExists()
         }
     }
 })
