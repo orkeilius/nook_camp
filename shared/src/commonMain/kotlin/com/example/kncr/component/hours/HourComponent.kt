@@ -32,30 +32,11 @@ fun HoursBoxComponent(viewModel: HoursViewModel, modifier: Modifier = Modifier) 
     Row(
         modifier = modifier
             .background(Color(0xFF4f535c))
-            .padding(4.dp)
+            .padding(vertical = 4.dp, horizontal = 12.dp)
             .height(100.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         HourComponent(viewModel = viewModel)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxHeight()
-        ) {
-            AppIcon(
-                iconType = IconType.Setting,
-                color = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-            AppIcon(
-                iconType = IconType.TownMusic,
-                color = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-        }
     }
 }
 
