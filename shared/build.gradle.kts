@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kover)
+    alias(libs.plugins.osdetector)
 }
 
 kover {
@@ -24,10 +26,6 @@ kotlin {
                 useJUnitPlatform()
             }
         }
-    }
-
-    js {
-        browser()
     }
 
     @OptIn(ExperimentalWasmDsl::class)
@@ -65,6 +63,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.gadulka)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -79,6 +78,25 @@ kotlin {
         jvmTest.dependencies {
             implementation(libs.kotest.runner.junit6)
             implementation(compose.desktop.currentOs)
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                val fxSuffix = when (osdetector.classifier) {
+                    "linux-x86_64" -> "linux"
+                    "linux-aarch_64" -> "linux-aarch64"
+                    "windows-x86_64" -> "win"
+                    "osx-x86_64" -> "mac"
+                    "osx-aarch_64" -> "mac-aarch64"
+                    else -> throw IllegalStateException("Unknown OS: ${osdetector.classifier}")
+                }
+                implementation("org.openjfx:javafx-base:${libs.versions.javafx.get()}:${fxSuffix}")
+                implementation("org.openjfx:javafx-graphics:${libs.versions.javafx.get()}:${fxSuffix}")
+                implementation("org.openjfx:javafx-controls:${libs.versions.javafx.get()}:${fxSuffix}")
+                implementation("org.openjfx:javafx-swing:${libs.versions.javafx.get()}:${fxSuffix}")
+                implementation("org.openjfx:javafx-web:${libs.versions.javafx.get()}:${fxSuffix}")
+                implementation("org.openjfx:javafx-media:${libs.versions.javafx.get()}:${fxSuffix}")
+            }
         }
     }
 }
