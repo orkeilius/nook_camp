@@ -4,6 +4,7 @@ import eu.iamkonstantin.kotlin.gadulka.GadulkaPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
@@ -12,11 +13,15 @@ class AudioService {
     private var player = GadulkaPlayer()
 
     fun start() {
-        scope.launch {audioloop()}
+        try {
+            player.play(url = "https://download.samplelib.com/wav/sample-12s.wav")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
-    fun audioloop(){
-        player.play(url = "https://download.samplelib.com/wav/sample-12s.wav")
+    fun stop() {
+        player.release()
     }
 
 

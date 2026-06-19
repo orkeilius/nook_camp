@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -71,9 +70,6 @@ kotlin {
             implementation(libs.kotest.assertions.core)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.ui.test)
-        }
-        jsMain.dependencies {
-            implementation(libs.wrappers.browser)
         }
         jvmTest.dependencies {
             implementation(libs.kotest.runner.junit6)
